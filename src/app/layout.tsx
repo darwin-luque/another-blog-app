@@ -1,4 +1,5 @@
 import { Inter as FontSans } from "next/font/google";
+import { ThemeProvider } from "@/providers/theme";
 import { TRPCReactProvider } from "@/trpc/react";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
@@ -27,7 +28,14 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
