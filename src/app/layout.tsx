@@ -1,3 +1,4 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -29,16 +30,18 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <TRPCReactProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NavbarLayout>{children}</NavbarLayout>
-          </ThemeProvider>
-        </TRPCReactProvider>
+        <ClerkProvider>
+          <TRPCReactProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <NavbarLayout>{children}</NavbarLayout>
+            </ThemeProvider>
+          </TRPCReactProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
