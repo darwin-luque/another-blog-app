@@ -1,19 +1,14 @@
-"use client";
-
 import { Rss } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { useAuth, UserButton } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { Search } from "./search";
 
 export const Navbar = () => {
-  const { userId } = useAuth();
-  const pathname = usePathname();
+  const { userId } = auth();
 
-  const isAuthPage = pathname === "/sign-in" || pathname === "/sign-up";
-
-  return isAuthPage ? null : (
+  return (
     <div className="border-b">
       <div className="flex h-16 items-center px-4">
         <div className="flex items-center gap-2">
