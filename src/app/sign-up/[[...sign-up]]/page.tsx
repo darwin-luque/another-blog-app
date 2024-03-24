@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 export default function Page() {
   return (
-    <div className="relative flex h-full w-full items-center justify-center">
+    <div className="relative flex h-screen w-screen items-center justify-center">
       <a
         href="/"
         className={cn(
@@ -13,7 +13,7 @@ export default function Page() {
             variant: "outline",
             size: "sm",
           }),
-          "absolute left-0 top-0",
+          "absolute left-4 top-4",
         )}
       >
         <ArrowLeft className="h-[1.2rem] w-[1.2rem]" />
