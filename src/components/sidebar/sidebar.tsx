@@ -1,3 +1,5 @@
+"use client";
+
 import {
   SquarePen,
   LayoutGrid,
@@ -7,14 +9,17 @@ import {
 } from "lucide-react";
 import type { FC, HTMLAttributes } from "react";
 // import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { auth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type SidebarProps = HTMLAttributes<HTMLDivElement>;
 
 export const Sidebar: FC<SidebarProps> = ({ className }) => {
-  const { userId } = auth();
+  const { userId } = useAuth();
+  const pathname = usePathname();
 
   return (
     <div className={cn("pb-12", className)}>
@@ -24,18 +29,42 @@ export const Sidebar: FC<SidebarProps> = ({ className }) => {
             Discover
           </h2>
           <div className="space-y-1">
-            <Button variant="secondary" className="w-full justify-start">
+            <Link
+              href="/"
+              className={cn(
+                buttonVariants({
+                  variant: pathname === "/" ? "secondary" : "ghost",
+                }),
+                "w-full justify-start",
+              )}
+            >
               <BookOpenText className="mr-2 h-4 w-4" />
               Read Now
-            </Button>
-            <Button variant="ghost" className="w-full justify-start">
+            </Link>
+            <Link
+              href="/browse"
+              className={cn(
+                buttonVariants({
+                  variant: pathname === "/browse" ? "secondary" : "ghost",
+                }),
+                "w-full justify-start",
+              )}
+            >
               <SearchCheck className="mr-2 h-4 w-4" />
               Browse
-            </Button>
-            <Button variant="ghost" className="w-full justify-start">
+            </Link>
+            <Link
+              href="/by-genre"
+              className={cn(
+                buttonVariants({
+                  variant: pathname === "/by-genre" ? "secondary" : "ghost",
+                }),
+                "w-full justify-start",
+              )}
+            >
               <LayoutGrid className="mr-2 h-4 w-4" />
               By Genre
-            </Button>
+            </Link>
           </div>
         </div>
         {userId ? (
@@ -44,14 +73,30 @@ export const Sidebar: FC<SidebarProps> = ({ className }) => {
               Library
             </h2>
             <div className="space-y-1">
-              <Button variant="ghost" className="w-full justify-start">
+              <Link
+                href="/create"
+                className={cn(
+                  buttonVariants({
+                    variant: pathname === "/create" ? "secondary" : "ghost",
+                  }),
+                  "w-full justify-start",
+                )}
+              >
                 <SquarePen className="mr-2 h-4 w-4" />
                 Create
-              </Button>
-              <Button variant="ghost" className="w-full justify-start">
+              </Link>
+              <Link
+                href="/my-blogs"
+                className={cn(
+                  buttonVariants({
+                    variant: pathname === "/my-blogs" ? "secondary" : "ghost",
+                  }),
+                  "w-full justify-start",
+                )}
+              >
                 <LibraryBig className="mr-2 h-4 w-4" />
                 My Blogs
-              </Button>
+              </Link>
             </div>
           </div>
         ) : null}
