@@ -9,7 +9,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <NavbarLayout>
       <SidebarLayout>
-        <main className="flex-1">{children}</main>
+        {children}
       </SidebarLayout>
     </NavbarLayout>
   );
