@@ -5,11 +5,12 @@ import Focus from "@tiptap/extension-focus";
 import StarterKit from "@tiptap/starter-kit";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
+import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import CharacterCount from "@tiptap/extension-character-count";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { Separator } from "@/components/ui/separator";
-import { MenuBar } from "./menu-bar";
+import { EditorToolbar } from "./toolbar";
 
 export const Editor: FC = () => {
   const editor = useEditor({
@@ -17,6 +18,11 @@ export const Editor: FC = () => {
       StarterKit,
       TaskList,
       TaskItem,
+      Underline.configure({
+        HTMLAttributes: {
+          class: 'underline',
+        },
+      }),
       CharacterCount.configure({
         limit: 10000,
       }),
@@ -36,9 +42,9 @@ export const Editor: FC = () => {
   });
 
   return (
-    <div className="flex flex-1 flex-col space-y-4">
+    <div className="flex flex-1 flex-col">
       <div>
-        {editor ? <MenuBar editor={editor} /> : null}
+        {editor ? <EditorToolbar editor={editor} /> : null}
         <Separator />
       </div>
       <EditorContent

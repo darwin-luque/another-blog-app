@@ -1,5 +1,6 @@
 import { Inter as FontSans } from "next/font/google";
 import { ThemedClerkProvider } from "@/providers/themed-clerk";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/providers/theme";
 import { TRPCReactProvider } from "@/trpc/react";
 import { cn } from "@/lib/utils";
@@ -36,7 +37,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ThemedClerkProvider>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
+            <TRPCReactProvider>
+              <TooltipProvider>{children}</TooltipProvider>
+            </TRPCReactProvider>
           </ThemedClerkProvider>
         </ThemeProvider>
       </body>
