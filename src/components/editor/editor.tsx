@@ -49,7 +49,7 @@ export const Editor: FC = () => {
       </div>
       <EditorContent
         editor={editor}
-        className="flex-auto overflow-y-auto overflow-x-hidden px-4 py-5 [-webkit-overflow-scrolling:touch]"
+        className="flex-auto overflow-hidden px-4 py-5"
       />
     </div>
   );
