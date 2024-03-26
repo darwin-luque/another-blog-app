@@ -1,3 +1,5 @@
+'use client';
+
 import { type FC } from "react";
 import { type Editor } from "@tiptap/react";
 import { Bold, Heading, Italic, Strikethrough, Underline } from "lucide-react";

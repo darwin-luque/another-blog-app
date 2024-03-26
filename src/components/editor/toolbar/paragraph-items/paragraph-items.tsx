@@ -1,7 +1,10 @@
+"use client";
+
 import type { Editor } from "@tiptap/react";
 import type { FC } from "react";
 import { MenuItem } from "../menu-item";
 import {
+  AlignLeft,
   Code,
   Highlighter,
   List,
@@ -11,6 +14,9 @@ import {
   SquareDashedBottomCode,
 } from "lucide-react";
 import { Separator } from "../../../ui/separator";
+import { DropdownMenu, DropdownMenuTrigger } from "../../../ui/dropdown-menu";
+import { Button } from "../../../ui/button";
+import { AlignDropdownContent } from "./align-dropdown-content";
 
 export type ParagraphItemsProps = {
   editor: Editor;
@@ -19,6 +25,17 @@ export type ParagraphItemsProps = {
 export const ParagraphItems: FC<ParagraphItemsProps> = ({ editor }) => {
   return (
     <>
+      <div className="flex gap-1">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <AlignLeft className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <AlignDropdownContent editor={editor} />
+        </DropdownMenu>
+      </div>
+      <Separator orientation="vertical" className="h-6" />
       <div className="flex gap-1">
         <MenuItem
           action={() => editor.chain().focus().toggleBulletList().run()}
