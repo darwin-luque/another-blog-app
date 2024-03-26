@@ -29,7 +29,7 @@ export const posts = pgTable(
       .notNull(),
   },
   (p) => ({
-    titleIndex: index("name_idx").on(p.title),
+    titleIndex: index("post_name_idx").on(p.title),
     categoryIndex: index("category_id_idx").on(p.categoryId),
   })
 );
@@ -57,7 +57,7 @@ export const categories = pgTable(
       .notNull(),
   },
   (c) => ({
-    nameIndex: index("name_idx").on(c.name),
+    nameIndex: index("category_name_idx").on(c.name),
   })
 );
 
