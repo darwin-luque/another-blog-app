@@ -125,8 +125,9 @@ export const Sidebar: FC<SidebarProps> = ({ className }) => {
                     href="/categories"
                     className={cn(
                       buttonVariants({
-                        variant:
-                          pathname === "/categories" ? "secondary" : "ghost",
+                        variant: pathname.startsWith("/categories")
+                          ? "secondary"
+                          : "ghost",
                       }),
                       "w-full justify-start",
                     )}
@@ -138,7 +139,9 @@ export const Sidebar: FC<SidebarProps> = ({ className }) => {
                     href="/tags"
                     className={cn(
                       buttonVariants({
-                        variant: pathname === "/tags" ? "secondary" : "ghost",
+                        variant: pathname.startsWith("/tags")
+                          ? "secondary"
+                          : "ghost",
                       }),
                       "w-full justify-start",
                     )}
