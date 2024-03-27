@@ -10,7 +10,6 @@ import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
 import CharacterCount from "@tiptap/extension-character-count";
 import { useEditor, EditorContent } from "@tiptap/react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -61,28 +60,24 @@ export const Editor: FC = () => {
 
   return (
     <Dialog>
-      <ScrollArea className="flex flex-1 flex-col">
-        <div className="flex w-full items-center space-x-2 p-1">
-          <Input
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
-            type="text"
-            placeholder="The Title of my Blog"
-            className="h-fit flex-1 border-none p-2 text-3xl font-extrabold"
-          />
-          <DialogTrigger asChild>
-            <Button disabled={!title}>Save</Button>
-          </DialogTrigger>
-        </div>
-        <div>
-          {editor ? <EditorToolbar editor={editor} /> : null}
-          <Separator />
-        </div>
-        <EditorContent
-          editor={editor}
-          className="flex-auto overflow-hidden px-4 py-5"
+      <div className="flex w-full items-center space-x-2 p-1">
+        <Input
+          onChange={(e) => setTitle(e.target.value)}
+          value={title}
+          type="text"
+          placeholder="The Title of my Blog"
+          className="h-fit flex-1 border-none p-2 text-3xl font-extrabold"
         />
-      </ScrollArea>
+        <DialogTrigger asChild>
+          <Button disabled={!title}>Save</Button>
+        </DialogTrigger>
+      </div>
+      <div className="sticky top-0 bg-background z-10">
+        {editor ? <EditorToolbar editor={editor} /> : null}
+        <Separator />
+      </div>
+
+      <EditorContent editor={editor} className="flex-auto px-4 py-5" />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>You are about to create new blog</DialogTitle>
