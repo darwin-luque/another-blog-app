@@ -21,7 +21,7 @@ export const Navbar = () => {
           <Search />
           <ModeToggle />
           {userId ? (
-            <UserButton />
+            <UserButton afterSignOutUrl="/" />
           ) : (
             <a
               href="/sign-in"
