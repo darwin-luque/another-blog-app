@@ -32,7 +32,7 @@ export const CategoryList: FC = () => {
             key={category.id}
           >
             <div className="flex items-center space-x-2">
-              <DynamicIcon className="h-4 w-4" name={category.icon} />
+              <DynamicIcon useLoader className="h-4 w-4" name={category.icon} />
               <p className="text-sm font-medium leading-none">
                 {category.name}
               </p>
