@@ -1,11 +1,12 @@
 "use client";
 
-import { Plus } from "lucide-react";
 import type { FC } from "react";
-import { api } from "@/trpc/react";
-import { DynamicIcon } from "@/components/ui/dynamic-icon";
+import { Plus } from "lucide-react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { DynamicIcon } from "@/components/ui/dynamic-icon";
 import { CreateCategoryModal } from "../create-modal";
+import { api } from "@/trpc/react";
+import { CategoryListElementActions } from "./actions";
 
 export const CategoryList: FC = () => {
   const { data } = api.categories.list.useQuery({
@@ -14,7 +15,7 @@ export const CategoryList: FC = () => {
 
   return (
     <Dialog>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         <DialogTrigger>
           <div className="flex items-center justify-between rounded-md border p-4">
             <div className="flex items-center space-x-2">
@@ -27,7 +28,7 @@ export const CategoryList: FC = () => {
         </DialogTrigger>
         {data?.items.map((category) => (
           <div
-            className="flex items-center justify-between rounded-md border p-4"
+            className="flex items-center justify-between rounded-md border pl-4 pr-2"
             key={category.id}
           >
             <div className="flex items-center space-x-2">
@@ -36,6 +37,7 @@ export const CategoryList: FC = () => {
                 {category.name}
               </p>
             </div>
+            <CategoryListElementActions />
           </div>
         ))}
       </div>
