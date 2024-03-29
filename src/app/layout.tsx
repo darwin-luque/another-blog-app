@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import { Inter as FontSans } from "next/font/google";
 import { ThemedClerkProvider } from "@/providers/themed-clerk";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -38,7 +39,12 @@ export default function RootLayout({
         >
           <ThemedClerkProvider>
             <TRPCReactProvider>
-              <TooltipProvider>{children}</TooltipProvider>
+              <TooltipProvider>
+                <>
+                  {children}
+                  <Toaster />
+                </>
+              </TooltipProvider>
             </TRPCReactProvider>
           </ThemedClerkProvider>
         </ThemeProvider>

@@ -12,6 +12,9 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm/relations";
+import { iconNamesEnum } from "./utils/icon-names-enum";
+
+export * from "./utils/icon-names-enum";
 
 export const posts = pgTable(
   "post",
@@ -49,6 +52,7 @@ export const categories = pgTable(
   {
     id: uuid("id").defaultRandom().primaryKey(),
     name: varchar("name", { length: 256 }).unique().notNull(),
+    icon: iconNamesEnum("icon").notNull().unique(),
     createdAt: timestamp("created_at")
       .defaultNow()
       .notNull(),
