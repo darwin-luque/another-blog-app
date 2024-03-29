@@ -37,7 +37,7 @@ export const CategoryList: FC = () => {
                 {category.name}
               </p>
             </div>
-            <CategoryListElementActions />
+            <CategoryListElementActions category={category} />
           </div>
         ))}
       </div>

@@ -5,6 +5,7 @@ import { DynamicIcon } from "@/components/ui/dynamic-icon";
 import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
 import { CategoryForm } from "../form";
+import { DialogContent } from "../../ui/dialog";
 
 export const CreateCategoryModal: FC = () => {
   const { toast } = useToast();
@@ -40,9 +41,11 @@ export const CreateCategoryModal: FC = () => {
   });
 
   return (
-    <CategoryForm
-      type="create"
-      onSubmit={(values) => createCategory.mutate(values)}
-    />
+    <DialogContent className="sm:max-w-[425px]">
+      <CategoryForm
+        type="create"
+        onSubmit={(values) => createCategory.mutate(values)}
+      />
+    </DialogContent>
   );
 };
