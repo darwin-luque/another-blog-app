@@ -4,7 +4,6 @@ import type { FC } from "react";
 import { api } from "@/trpc/react";
 import type { api as serverApi } from "@/trpc/server";
 import { DynamicIcon } from "@/components/ui/dynamic-icon";
-import { DialogContent } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { CategoryForm } from "../form";
 
@@ -45,12 +44,10 @@ export const EditCategoryModal: FC<EditCategoryModalProps> = ({ category }) => {
   });
 
   return (
-    <DialogContent className="sm:max-w-[425px]">
-      <CategoryForm
-        type="edit"
-        initialValues={category}
-        onSubmit={(values) => updateCategory.mutate({ ...category, ...values })}
-      />
-    </DialogContent>
+    <CategoryForm
+      type="edit"
+      initialValues={category}
+      onSubmit={(values) => updateCategory.mutate({ ...category, ...values })}
+    />
   );
 };

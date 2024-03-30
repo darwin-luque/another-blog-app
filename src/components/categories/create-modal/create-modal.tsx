@@ -11,12 +11,7 @@ export const CreateCategoryModal: FC = () => {
   const { toast } = useToast();
   const apiUtils = api.useUtils();
   const createCategory = api.categories.create.useMutation({
-    onError(val1, val2, val3) {
-      console.log({
-        val1,
-        val2,
-        val3,
-      });
+    onError() {
       toast({
         title: "Uh oh! Something went wrong.",
         description: "Could not create category. Please try again.",
