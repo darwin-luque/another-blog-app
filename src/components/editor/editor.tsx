@@ -10,6 +10,7 @@ import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
 import CharacterCount from "@tiptap/extension-character-count";
 import { useEditor, EditorContent } from "@tiptap/react";
+import type { api as serverApi } from "@/trpc/server";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -25,10 +26,23 @@ import {
   DialogDescription,
   DialogClose,
 } from "@/components/ui/dialog";
+import { CategoriesCombobox } from "../categories/combobox";
+import { api } from "../../trpc/react";
+import { useAuth } from "@clerk/nextjs";
+import { useToast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
+
+type Category = Awaited<
+  ReturnType<typeof serverApi.categories.list>
+>["items"][number];
 
 export const Editor: FC = () => {
+  const { userId } = useAuth();
+  const router = useRouter();
+  const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [confirmTitle, setConfirmTitle] = useState("");
+  const [category, setCategory] = useState<Category | null>(null);
   const editor = useEditor({
     extensions: [
       TaskList,
@@ -58,6 +72,22 @@ export const Editor: FC = () => {
     `,
   });
 
+  const createPost = api.posts.create.useMutation({
+    onSuccess(_, data) {
+      router.push("/my-blogs");
+      toast({
+        title: `${data.title} has been created!`,
+        description: "You can view it on the homepage.",
+      });
+    },
+    onError(err) {
+      toast({
+        title: "Failed to create post",
+        description: err.message,
+      });
+    },
+  });
+
   return (
     <Dialog>
       <div className="flex w-full items-center space-x-2 p-1">
@@ -72,7 +102,7 @@ export const Editor: FC = () => {
           <Button disabled={!title}>Save</Button>
         </DialogTrigger>
       </div>
-      <div className="sticky top-0 bg-background z-10">
+      <div className="sticky top-0 z-10 bg-background">
         {editor ? <EditorToolbar editor={editor} /> : null}
         <Separator />
       </div>
@@ -87,21 +117,34 @@ export const Editor: FC = () => {
             <br />
             <sub>*Note: Drafts are not yet implemented.</sub>
           </DialogDescription>
-          <div className="grid w-full max-w-sm items-center gap-2 pt-5">
-            <Label htmlFor="email">Confirm Title</Label>
-            <Input
-              onChange={(e) => setConfirmTitle(e.target.value)}
-              value={confirmTitle}
-              type="text"
-              placeholder={title}
-            />
-          </div>
         </DialogHeader>
+        <div className="grid w-full max-w-sm items-center gap-2 pt-5">
+          <Label htmlFor="email">Confirm Title</Label>
+          <Input
+            onChange={(e) => setConfirmTitle(e.target.value)}
+            value={confirmTitle}
+            type="text"
+            placeholder={title}
+          />
+          <Label>Chose Category</Label>
+          <CategoriesCombobox value={category} onSelect={setCategory} />
+        </div>
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="secondary">Keep editing</Button>
           </DialogClose>
-          <Button disabled={title !== confirmTitle} variant="default">
+          <Button
+            disabled={title !== confirmTitle || !category}
+            variant="default"
+            onClick={() =>
+              createPost.mutate({
+                title,
+                categoryId: category?.id ?? "",
+                content: editor?.getHTML() ?? "",
+                createdBy: userId ?? "default-user",
+              })
+            }
+          >
             Save
           </Button>
         </DialogFooter>
