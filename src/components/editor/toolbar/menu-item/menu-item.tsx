@@ -23,7 +23,7 @@ export const MenuItem: FC<MenuItemProps> = ({
 }) => {
   return (
     <Tooltip delayDuration={200}>
-      <TooltipTrigger>
+      <TooltipTrigger asChild>
         <Button
           variant={isActive?.() ? "secondary" : "ghost"}
           size="icon"

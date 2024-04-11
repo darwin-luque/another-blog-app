@@ -1,36 +1,29 @@
 "use client";
 
+import { useAuth } from "@clerk/nextjs";
 import { useState, type FC } from "react";
-import Focus from "@tiptap/extension-focus";
-import StarterKit from "@tiptap/starter-kit";
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
-import Underline from "@tiptap/extension-underline";
-import Highlight from "@tiptap/extension-highlight";
-import TextAlign from "@tiptap/extension-text-align";
-import CharacterCount from "@tiptap/extension-character-count";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useRouter } from "next/navigation";
+import { EditorContent } from "@tiptap/react";
 import type { api as serverApi } from "@/trpc/server";
 import { Separator } from "@/components/ui/separator";
+import { useAppEditor } from "@/hooks/use-app-editor";
+import { CategoriesCombobox } from "@/components/categories/combobox";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { EditorToolbar } from "./toolbar";
 import {
   Dialog,
+  DialogClose,
   DialogTitle,
   DialogFooter,
   DialogHeader,
   DialogContent,
   DialogTrigger,
   DialogDescription,
-  DialogClose,
 } from "@/components/ui/dialog";
-import { CategoriesCombobox } from "../categories/combobox";
-import { api } from "../../trpc/react";
-import { useAuth } from "@clerk/nextjs";
-import { useToast } from "../ui/use-toast";
-import { useRouter } from "next/navigation";
+import { api } from "@/trpc/react";
 
 type Category = Awaited<
   ReturnType<typeof serverApi.categories.list>
@@ -43,34 +36,7 @@ export const Editor: FC = () => {
   const [title, setTitle] = useState("");
   const [confirmTitle, setConfirmTitle] = useState("");
   const [category, setCategory] = useState<Category | null>(null);
-  const editor = useEditor({
-    extensions: [
-      TaskList,
-      TaskItem,
-      Highlight,
-      TextAlign,
-      StarterKit,
-      Underline.configure({
-        HTMLAttributes: {
-          class: "underline",
-        },
-      }),
-      CharacterCount.configure({
-        limit: 10000,
-      }),
-      Focus.configure({
-        className: "outline-none",
-      }),
-    ],
-    editorProps: {
-      attributes: {
-        class: "prose dark:prose-invert prose-base m-5 focus:outline-none",
-      },
-    },
-    content: `
-      <p>Hello World! 🌍️</p>
-    `,
-  });
+  const editor = useAppEditor();
 
   const createPost = api.posts.create.useMutation({
     onSuccess(_, data) {

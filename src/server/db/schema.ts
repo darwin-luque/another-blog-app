@@ -2,6 +2,7 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import {
+  doublePrecision,
   index,
   pgTable,
   primaryKey,
@@ -165,3 +166,22 @@ export const reactionsRelations = relations(reactions, ({ one }) => ({
     references: [posts.id],
   }),
 }));
+
+export const files = pgTable(
+  "file",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    url: varchar("url", { length: 256 }).notNull(),
+    key: varchar("key", { length: 256 }).notNull(),
+    size: doublePrecision("size").notNull(),
+    type: varchar("type", { length: 256 }).notNull(),
+    createdBy: varchar("created_by", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at")
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .notNull(),
+  }
+)

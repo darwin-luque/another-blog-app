@@ -43,3 +43,6 @@ yarn-error.log*
 
 # docker volumes
 /volumes
+
+# npmrc - has a token
+.npmrc
