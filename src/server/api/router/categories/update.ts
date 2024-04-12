@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
-import { publicProcedure } from "@/server/api/trpc";
+import { adminProcedure } from "@/server/api/trpc";
 import { categories } from "@/server/db/schema";
 import { TRPCError } from "@trpc/server";
 
@@ -16,7 +16,7 @@ const updateCategorySchema = createInsertSchema(categories, {
   name: (schema) => schema.name.optional(),
 });
 
-export const updateCategory = publicProcedure
+export const updateCategory = adminProcedure
   .input(inputSchema)
   .mutation(async ({ input, ctx }) => {
     const parsedInput = await updateCategorySchema.safeParseAsync(input);

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createInsertSchema } from "drizzle-zod";
-import { publicProcedure } from "@/server/api/trpc";
+import { adminProcedure } from "@/server/api/trpc";
 import { categories } from "@/server/db/schema";
 import { TRPCError } from "@trpc/server";
 
@@ -9,7 +9,7 @@ const inputSchema = createInsertSchema(categories, {
 });
 const insertCategorySchema = createInsertSchema(categories);
 
-export const createCategory = publicProcedure
+export const createCategory = adminProcedure
   .input(inputSchema)
   .mutation(async ({ input, ctx }) => {
     const parsedInput = await insertCategorySchema.safeParseAsync(input);
