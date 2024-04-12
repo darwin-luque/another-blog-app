@@ -1,5 +1,5 @@
-import { PostArtwork } from "../../../components/posts/post-artwork";
-import { api } from "../../../trpc/server";
+import { PostArtwork } from "@/components/posts/post-artwork";
+import { api } from "@/trpc/server";
 
 type MyBlogsProps = {
   searchParams?: {

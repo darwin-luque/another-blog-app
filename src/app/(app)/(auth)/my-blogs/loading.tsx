@@ -1,4 +1,4 @@
-import { Skeleton } from "../../../components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const SkeletonPostArtwork = () => (
   <div className="w-[300px] space-y-3">
