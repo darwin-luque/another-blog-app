@@ -6,13 +6,16 @@ import { TRPCError } from "@trpc/server";
 
 const inputSchema = createInsertSchema(categories, {
   icon: z.string(),
-});
+}).omit({ slug: true });
 const insertCategorySchema = createInsertSchema(categories);
 
 export const createCategory = adminProcedure
   .input(inputSchema)
   .mutation(async ({ input, ctx }) => {
-    const parsedInput = await insertCategorySchema.safeParseAsync(input);
+    const parsedInput = await insertCategorySchema.safeParseAsync({
+      ...input,
+      slug: input.name.toLowerCase().replace(/ /g, "-"),
+    });
     if (!parsedInput.success) {
       throw new TRPCError({
         code: "BAD_REQUEST",

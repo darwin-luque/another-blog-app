@@ -46,6 +46,10 @@ export const postsRelations = relations(posts, ({ one, many }) => ({
     fields: [posts.categoryId],
     references: [categories.id],
   }),
+  preview: one(files, {
+    fields: [posts.previewId],
+    references: [files.id],
+  }),
   tags: many(postTags),
   comments: many(comments),
   reactions: many(reactions),
@@ -57,6 +61,7 @@ export const categories = pgTable(
     id: uuid("id").defaultRandom().primaryKey(),
     name: varchar("name", { length: 256 }).unique().notNull(),
     icon: iconNamesEnum("icon").notNull().unique(),
+    slug: varchar("slug", { length: 256 }).unique().notNull(),
     createdAt: timestamp("created_at")
       .defaultNow()
       .notNull(),
