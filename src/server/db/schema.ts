@@ -17,6 +17,7 @@ import { iconNamesEnum } from "./utils/icon-names-enum";
 
 export * from "./utils/icon-names-enum";
 
+
 export const posts = pgTable(
   "post",
   {
@@ -25,6 +26,7 @@ export const posts = pgTable(
     content: text("content").notNull(),
     createdBy: varchar("created_by", { length: 256 }).notNull(),
     categoryId: uuid("category_id").notNull().references(() => categories.id),
+    previewId: uuid("preview_id").notNull().unique().references(() => files.id),
     createdAt: timestamp("created_at")
       .defaultNow()
       .notNull(),
@@ -35,6 +37,7 @@ export const posts = pgTable(
   (p) => ({
     titleIndex: index("post_name_idx").on(p.title),
     categoryIndex: index("category_id_idx").on(p.categoryId),
+    previewIndex: index("preview_id_idx").on(p.previewId),
   })
 );
 
@@ -184,4 +187,8 @@ export const files = pgTable(
       .defaultNow()
       .notNull(),
   }
-)
+);
+
+export const filesRelations = relations(files, ({ one }) => ({
+  postPreview: one(posts),
+}));

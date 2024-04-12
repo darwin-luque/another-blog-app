@@ -4,15 +4,14 @@ import { useAuth } from "@clerk/nextjs";
 import { useState, type FC } from "react";
 import { useRouter } from "next/navigation";
 import { EditorContent } from "@tiptap/react";
-import type { api as serverApi } from "@/trpc/server";
-import { Separator } from "@/components/ui/separator";
 import { useAppEditor } from "@/hooks/use-app-editor";
+import type { api as serverApi } from "@/trpc/server";
 import { CategoriesCombobox } from "@/components/categories/combobox";
+import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { EditorToolbar } from "./toolbar";
 import {
   Dialog,
   DialogClose,
@@ -24,6 +23,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { api } from "@/trpc/react";
+import { EditorToolbar } from "./toolbar";
+import { PreviewDropzone } from "./preview-dropzone";
 
 type Category = Awaited<
   ReturnType<typeof serverApi.categories.list>
@@ -35,6 +36,7 @@ export const Editor: FC = () => {
   const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [confirmTitle, setConfirmTitle] = useState("");
+  const [previewId, setPreviewId] = useState<string | null>(null);
   const [category, setCategory] = useState<Category | null>(null);
   const editor = useAppEditor();
 
@@ -94,13 +96,17 @@ export const Editor: FC = () => {
           />
           <Label>Chose Category</Label>
           <CategoriesCombobox value={category} onSelect={setCategory} />
+          <Label>Upload a Preview Image</Label>
+          <PreviewDropzone setPreviewId={setPreviewId} />
         </div>
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="secondary">Keep editing</Button>
           </DialogClose>
           <Button
-            disabled={title !== confirmTitle || !category}
+            disabled={
+              title !== confirmTitle || !category || !previewId || !editor
+            }
             variant="default"
             onClick={() =>
               createPost.mutate({
@@ -108,6 +114,7 @@ export const Editor: FC = () => {
                 categoryId: category?.id ?? "",
                 content: editor?.getHTML() ?? "",
                 createdBy: userId ?? "default-user",
+                previewId: previewId ?? "",
               })
             }
           >

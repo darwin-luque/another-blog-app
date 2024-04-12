@@ -57,20 +57,20 @@ export const CategoriesCombobox: FC<CategoriesComboboxProps> = ({
               {value.name}
             </div>
           ) : (
-            "Select framework..."
+            "Select category..."
           )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[350px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." className="h-9" />
+          <CommandInput placeholder="Search category..." className="h-9" />
           <CommandList>
             <CommandEmpty>
               {isLoading ? (
                 <Loader2 className="animate-spin" />
               ) : (
-                "No frameworks found"
+                "No categories found"
               )}
             </CommandEmpty>
             <CommandGroup heading="Categories">

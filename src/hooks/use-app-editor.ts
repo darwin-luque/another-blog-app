@@ -70,7 +70,11 @@ export const useAppEditor = ({ quiet }: UseAppEditorProps = {}) => {
     extensions: [
       TaskList,
       TaskItem,
-      Highlight,
+      Highlight.configure({
+        HTMLAttributes: {
+          class: "bg-yellow-200",
+        },
+      }),
       TextAlign,
       StarterKit,
       Image,
