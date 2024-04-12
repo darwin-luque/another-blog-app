@@ -1,16 +1,14 @@
-import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
-
 import { db } from "@/server/db";
-import { getAuth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-  const auth = getAuth(opts.req);
+export const createTRPCContext = async (opts: { headers: Headers }) => {
+  const authData = auth();
   return {
     db,
-    auth,
+    auth: authData,
     ...opts,
   };
 };

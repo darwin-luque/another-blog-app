@@ -9,7 +9,7 @@ interface IconProps extends Omit<LucideProps, "ref"> {
   useLoader?: boolean;
 }
 
-export const DynamicIcon = ({ name, useLoader, ...props }: IconProps) => {
+export const DynamicIcon = ({ name, useLoader = false, ...props }: IconProps) => {
   if (!(name in dynamicIconImports)) {
     if (useLoader) {
       return (

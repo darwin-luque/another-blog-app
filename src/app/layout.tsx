@@ -1,3 +1,4 @@
+import "@uploadthing/react/styles.css";
 import { Inter as FontSans } from "next/font/google";
 import { extractRouterConfig } from "uploadthing/server";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";

@@ -6,7 +6,14 @@ await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 const config = {
-  transpilePackages: ['lucide-react']
+  transpilePackages: ['lucide-react'],
+  images: {
+    remotePatterns: [
+      {
+        hostname: 'utfs.io',
+      }
+    ],
+  }
 };
 
 export default config;
