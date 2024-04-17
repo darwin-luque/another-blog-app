@@ -1,19 +1,21 @@
+import Image from "next/image";
 import type { HTMLAttributes, FC } from "react";
-import type { api } from "../../../trpc/server";
-import { cn } from "../../../lib/utils";
+import type { IClerkUserResponse } from "@/lib/clerk";
+import type { api } from "@/trpc/server";
+import { cn } from "@/lib/utils";
+import { env } from "@/env";
 import {
   ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuSeparator,
   ContextMenuSub,
-  // ContextMenuSubContent,
-  ContextMenuSubTrigger,
+  ContextMenuItem,
+  ContextMenuContent,
   ContextMenuTrigger,
-} from "../../ui/context-menu";
-import Image from "next/image";
-import { Badge } from "../../ui/badge";
-import { DynamicIcon } from "../../ui/dynamic-icon";
+  ContextMenuSeparator,
+  ContextMenuSubTrigger,
+  // ContextMenuSubContent,
+} from "@/components/ui/context-menu";
+import { Badge } from "@/components/ui/badge";
+import { DynamicIcon } from "@/components/ui/dynamic-icon";
 // import { PlusCircle } from "lucide-react";
 
 export type PostArtworkProps = HTMLAttributes<HTMLDivElement> & {
@@ -23,7 +25,7 @@ export type PostArtworkProps = HTMLAttributes<HTMLDivElement> & {
   height?: number;
 };
 
-export const PostArtwork: FC<PostArtworkProps> = ({
+export const PostArtwork: FC<PostArtworkProps> = async ({
   post,
   aspectRatio = "square",
   height = 300,
@@ -31,25 +33,45 @@ export const PostArtwork: FC<PostArtworkProps> = ({
   className,
   ...props
 }) => {
+  const res = await fetch(
+    "https://api.clerk.com/v1/users?limit=1&offset=0&order_by=-created_at&user_id=" +
+      post.createdBy,
+    {
+      headers: {
+        Authorization: "Bearer " + env.CLERK_SECRET_KEY,
+      },
+    },
+  );
+
+  const [user] = res.ok
+    ? ((await res.json()) as [IClerkUserResponse | undefined])
+    : [];
+
   let aspectRatioClass = "aspect-square";
   if (aspectRatio === "portrait") {
     aspectRatioClass = "aspect-[3/4]";
   } else if (aspectRatio === "landscape") {
     aspectRatioClass = "aspect-[4/3]";
   }
+
   return (
     <div className={cn("max-w-[300px] space-y-3", className)} {...props}>
       <ContextMenu>
         <ContextMenuTrigger>
           <div className="relative overflow-hidden rounded-md">
-            <Badge className="absolute left-0 top-0 group space-x-2 px-1 group transition-all z-50" variant="secondary">
+            <Badge
+              className="group group absolute left-0 top-0 z-50 space-x-2 px-1 transition-all"
+              variant="secondary"
+            >
               <DynamicIcon
                 name={post.cateogry.icon}
                 width={16}
                 height={16}
                 useLoader
               />
-              <p className="text-xs hidden group-hover:[display:initial]">{post.cateogry.name}</p>
+              <p className="hidden text-xs group-hover:[display:initial]">
+                {post.cateogry.name}
+              </p>
             </Badge>
             <Image
               alt={post.title}
@@ -101,6 +123,11 @@ export const PostArtwork: FC<PostArtworkProps> = ({
       </ContextMenu>
       <div className="space-y-1 text-sm">
         <h3 className="font-medium leading-none">{post.title}</h3>
+        {!!user ? (
+          <p className="text-xs text-muted-foreground">
+            {user.first_name} {user.last_name}
+          </p>
+        ) : null}
       </div>
     </div>
   );
