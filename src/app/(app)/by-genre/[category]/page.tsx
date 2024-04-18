@@ -21,7 +21,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             {category.name}
           </h2>
           <p className="text-sm text-muted-foreground">
-            Find all posts in the {category.name} genre
+            {category.description}
           </p>
         </div>
       </div>

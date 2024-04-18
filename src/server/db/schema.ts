@@ -60,10 +60,11 @@ export const categories = pgTable(
   {
     id: uuid("id").defaultRandom().primaryKey(),
     name: varchar("name", { length: 256 }).unique().notNull(),
+    description: text("description").notNull(),
     icon: iconNamesEnum("icon").notNull().unique(),
     slug: varchar("slug", { length: 256 }).unique().notNull(),
     createdAt: timestamp("created_at")
-      .defaultNow()
+    .defaultNow()
       .notNull(),
     updatedAt: timestamp("updated_at")
       .defaultNow()
