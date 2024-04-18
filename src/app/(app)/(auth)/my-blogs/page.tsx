@@ -1,5 +1,5 @@
-import { PostArtwork } from "@/components/posts/post-artwork";
 import { api } from "@/trpc/server";
+import { PostsList } from "@/components/posts/list";
 
 type MyBlogsProps = {
   searchParams?: {
@@ -18,11 +18,5 @@ export default async function MyBlogs({ searchParams }: MyBlogsProps) {
     offset: searchParams?.offset,
   });
 
-  return (
-    <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {data.map((post) => (
-        <PostArtwork key={post.id} post={post} aspectRatio="landscape" />
-      ))}
-    </div>
-  );
+  return <PostsList posts={data} />;
 }
