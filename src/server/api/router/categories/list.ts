@@ -1,26 +1,41 @@
 import { z } from "zod";
-import { count } from "drizzle-orm";
+import { count, type SQL } from "drizzle-orm";
 import { paginationSchema } from "@/server/api/commons/schemas/pagination";
 import { sortSchema } from "@/server/api/commons/schemas/sort";
 import { publicProcedure } from "@/server/api/trpc";
 import { categories } from "@/server/db/schema";
 import { fieldEnums } from "./schemas";
 
-export const listCategoriesSchema = z.object({})
+export const listCategoriesSchema = z.object({
+  q: z.string().optional(),
+})
   .merge(paginationSchema)
   .merge(sortSchema(fieldEnums.default("name")));
 
 export const listCategories = publicProcedure
   .input(listCategoriesSchema)
   .query(async ({ input, ctx }) => {
-    const data = await ctx.db.query.categories.findMany({
-      orderBy: (cat, op) => op[input.direction](cat[input.field]),
-      offset: input.offset,
-      limit: input.limit,
-    });
-    const [total] = await ctx.db.select({
-      count: count(categories.id),
-    }).from(categories);
+    const [data, [total]] = await Promise.all([
+      ctx.db.query.categories.findMany({
+        orderBy(fields, op) {
+          return op[input.direction](fields[input.field]);
+        },
+        offset: input.offset,
+        limit: input.limit,
+        where(fields, op) {
+          let query: SQL | undefined = undefined;
+          if (input.q) {
+            query = op.ilike(fields.name, `%${input.q}%`);
+          }
+          return query;
+        },
+      }),
+      ctx.db
+        .select({
+          count: count(categories.id),
+        })
+        .from(categories)
+    ]);
 
     return {
       items: data,
