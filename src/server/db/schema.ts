@@ -53,6 +53,7 @@ export const postsRelations = relations(posts, ({ one, many }) => ({
   tags: many(postTags),
   comments: many(comments),
   reactions: many(reactions),
+  views: many(views),
 }));
 
 export const categories = pgTable(
@@ -197,4 +198,29 @@ export const files = pgTable(
 
 export const filesRelations = relations(files, ({ one }) => ({
   postPreview: one(posts),
+}));
+
+export const views = pgTable(
+  "view",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    by: varchar("by", { length: 256 }).notNull(),
+    postId: uuid("post_id").notNull().references(() => posts.id),
+    createdAt: timestamp("created_at")
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .notNull(),
+  },
+  (v) => ({
+    postViewsUnique: unique("post_views_unique").on(v.postId),
+  })
+);
+
+export const viewsRelations = relations(views, ({ one }) => ({
+  post: one(posts, {
+    fields: [views.postId],
+    references: [posts.id],
+  }),
 }));
