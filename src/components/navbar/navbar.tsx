@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { Rss } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
-import { Search } from "./search";
+// import { Search } from "./search";
 
 export const Navbar = () => {
   const { userId } = auth();
@@ -11,14 +12,14 @@ export const Navbar = () => {
   return (
     <div className="border-b">
       <div className="flex h-16 items-center px-4">
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <Rss className="h-5 w-5 font-bold" />
           <h1 className="text-xl font-bold tracking-tight">
             Yet Another Blog App
           </h1>
-        </div>
+        </Link>
         <div className="ml-auto flex items-center space-x-4">
-          <Search />
+          {/* <Search /> */}
           <ModeToggle />
           {userId ? (
             <UserButton afterSignOutUrl="/" />
