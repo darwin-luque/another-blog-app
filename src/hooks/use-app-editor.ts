@@ -6,6 +6,7 @@ import Image from "@tiptap/extension-image";
 import StarterKit from "@tiptap/starter-kit";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
+import Paragraph from "@tiptap/extension-paragraph";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
@@ -20,9 +21,10 @@ type UseAppEditorProps = {
     error?: boolean;
     success?: boolean;
   };
+  content?: string;
 };
 
-export const useAppEditor = ({ quiet }: UseAppEditorProps = {}) => {
+export const useAppEditor = ({ quiet, content }: UseAppEditorProps = {}) => {
   const { toast } = useToast();
   const createFile = api.files.create.useMutation();
   const { startUpload } = useUploadThing("imageUploader", {
@@ -78,6 +80,11 @@ export const useAppEditor = ({ quiet }: UseAppEditorProps = {}) => {
       TextAlign,
       StarterKit,
       Image,
+      Paragraph.configure({
+        HTMLAttributes: {
+          class: 'w-full',
+        },
+      }),
       FileHandler.configure({
         allowedMimeTypes: [
           "image/png",
@@ -133,10 +140,10 @@ export const useAppEditor = ({ quiet }: UseAppEditorProps = {}) => {
     ],
     editorProps: {
       attributes: {
-        class: "prose dark:prose-invert prose-base m-5 focus:outline-none",
+        class: "prose dark:prose-invert prose-base flex-1 m-5 focus:outline-none",
       },
     },
-    content: `
+    content: content ?? `
       <p>Hello World! 🌍️</p>
     `,
   });

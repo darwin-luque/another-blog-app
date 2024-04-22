@@ -1,9 +1,8 @@
+import Link from "next/link";
 import Image from "next/image";
 import type { HTMLAttributes, FC } from "react";
-import type { IClerkUserResponse } from "@/lib/clerk";
 import type { api } from "@/trpc/server";
 import { cn } from "@/lib/utils";
-import { env } from "@/env";
 import {
   ContextMenu,
   ContextMenuSub,
@@ -16,9 +15,10 @@ import {
 } from "@/components/ui/context-menu";
 import { Badge } from "@/components/ui/badge";
 import { DynamicIcon } from "@/components/ui/dynamic-icon";
+import { fetchUser } from "../../../lib/fetch-user";
 // import { PlusCircle } from "lucide-react";
 
-export type PostArtworkProps = HTMLAttributes<HTMLDivElement> & {
+export type PostArtworkProps = HTMLAttributes<HTMLAnchorElement> & {
   post: Awaited<ReturnType<typeof api.posts.mine>>[0];
   aspectRatio?: "portrait" | "square" | "landscape";
   width?: number;
@@ -33,19 +33,7 @@ export const PostArtwork: FC<PostArtworkProps> = async ({
   className,
   ...props
 }) => {
-  const res = await fetch(
-    "https://api.clerk.com/v1/users?limit=1&offset=0&order_by=-created_at&user_id=" +
-      post.createdBy,
-    {
-      headers: {
-        Authorization: "Bearer " + env.CLERK_SECRET_KEY,
-      },
-    },
-  );
-
-  const [user] = res.ok
-    ? ((await res.json()) as [IClerkUserResponse | undefined])
-    : [];
+  const user = await fetchUser(post.createdBy);
 
   let aspectRatioClass = "aspect-square";
   if (aspectRatio === "portrait") {
@@ -55,7 +43,11 @@ export const PostArtwork: FC<PostArtworkProps> = async ({
   }
 
   return (
-    <div className={cn("max-w-[300px] space-y-3", className)} {...props}>
+    <Link
+      {...props}
+      href={`/${post.id}`}
+      className={cn("max-w-[300px] space-y-3", className)}
+    >
       <ContextMenu>
         <ContextMenuTrigger>
           <div className="relative overflow-hidden rounded-md">
@@ -129,6 +121,6 @@ export const PostArtwork: FC<PostArtworkProps> = async ({
           </p>
         ) : null}
       </div>
-    </div>
+    </Link>
   );
 };
