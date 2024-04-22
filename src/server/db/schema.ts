@@ -50,10 +50,11 @@ export const postsRelations = relations(posts, ({ one, many }) => ({
     fields: [posts.previewId],
     references: [files.id],
   }),
+  views: many(views),
   tags: many(postTags),
   comments: many(comments),
   reactions: many(reactions),
-  views: many(views),
+  bookmarks: many(bookmarksPosts),
 }));
 
 export const categories = pgTable(
@@ -215,12 +216,62 @@ export const views = pgTable(
   },
   (v) => ({
     postViewsUnique: unique("post_views_unique").on(v.postId),
+    byIndex: index("by_idx").on(v.by),
+    postIdIndex: index("post_id_idx").on(v.postId),
   })
 );
 
 export const viewsRelations = relations(views, ({ one }) => ({
   post: one(posts, {
     fields: [views.postId],
+    references: [posts.id],
+  }),
+}));
+
+export const bookmarks = pgTable(
+  "bookmark",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    createdBy: varchar("owner", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at")
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .notNull(),
+  }
+);
+
+export const bookmarksRelations = relations(bookmarks, ({ many }) => ({
+  posts: many(bookmarksPosts),
+}));
+
+export const bookmarksPosts = pgTable(
+  "bookmark_posts",
+  {
+    bookmarkId: uuid("bookmark_id").notNull().references(() => bookmarks.id),
+    postId: uuid("post_id").notNull().references(() => posts.id),
+    createdAt: timestamp("created_at")
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .notNull(),
+  },
+  (bp) => ({
+    pk: primaryKey({ columns: [bp.bookmarkId, bp.postId] }),
+    bookmarkPostIndex: index("bookmark_post_idx").on(bp.bookmarkId, bp.postId),
+  })
+);
+
+export const bookmarksPostsRelations = relations(bookmarksPosts, ({ one }) => ({
+  bookmark: one(bookmarks, {
+    fields: [bookmarksPosts.bookmarkId],
+    references: [bookmarks.id],
+  }),
+  post: one(posts, {
+    fields: [bookmarksPosts.postId],
     references: [posts.id],
   }),
 }));
