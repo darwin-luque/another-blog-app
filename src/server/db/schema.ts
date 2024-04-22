@@ -42,7 +42,7 @@ export const posts = pgTable(
 );
 
 export const postsRelations = relations(posts, ({ one, many }) => ({
-  cateogry: one(categories, {
+  category: one(categories, {
     fields: [posts.categoryId],
     references: [categories.id],
   }),

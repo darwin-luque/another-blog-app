@@ -13,7 +13,7 @@ import { DynamicIcon } from "@/components/ui/dynamic-icon";
 import { cn } from "../../../../../lib/utils";
 
 export type CategoryHoverCardProps = {
-  category: Awaited<ReturnType<typeof api.posts.mine>>[0]["cateogry"];
+  category: Awaited<ReturnType<typeof api.posts.mine>>[0]["category"];
 };
 
 export const CategoryHoverCard: FC<CategoryHoverCardProps> = ({ category }) => {

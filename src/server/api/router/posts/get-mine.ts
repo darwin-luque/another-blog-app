@@ -26,7 +26,7 @@ export const getMyPosts = protectedProcedure
         return eq(fields.createdBy, ctx.auth.userId);
       },
       with: {
-        cateogry: true,
+        category: true,
         preview: true,
       }
     });

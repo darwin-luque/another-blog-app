@@ -23,7 +23,7 @@ export const listPostsForCategory = publicProcedure
         limit: input.limit,
         where: whereClause,
         with: {
-          cateogry: true,
+          category: true,
           preview: true,
         },
       }),

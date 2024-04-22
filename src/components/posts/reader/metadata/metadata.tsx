@@ -30,7 +30,7 @@ export const PostMetadata: FC<PostMetadataProps> = async ({ post }) => {
         <div className="flex h-5 items-center space-x-2 text-xs">
           <p className="text-gray-500">
             <span>Classified as </span>
-            <CategoryHoverCard category={post.cateogry} />
+            <CategoryHoverCard category={post.category} />
           </p>
           <Separator orientation="vertical" />
           <p className="text-gray-500">

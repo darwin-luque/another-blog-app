@@ -56,13 +56,13 @@ export const PostArtwork: FC<PostArtworkProps> = async ({
               variant="secondary"
             >
               <DynamicIcon
-                name={post.cateogry.icon}
+                name={post.category.icon}
                 width={16}
                 height={16}
                 useLoader
               />
               <p className="hidden text-xs group-hover:[display:initial]">
-                {post.cateogry.name}
+                {post.category.name}
               </p>
             </Badge>
             <Image

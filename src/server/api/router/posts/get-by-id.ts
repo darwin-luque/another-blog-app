@@ -10,7 +10,7 @@ export const getPostById = publicProcedure
     const post = await ctx.db.query.posts.findFirst({
       where: eq(posts.id, input),
       with: {
-        cateogry: true,
+        category: true,
         preview: true,
       }
     });
