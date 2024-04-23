@@ -4,7 +4,7 @@ import { ZodError } from "zod";
 import { db } from "@/server/db";
 import { auth } from "@clerk/nextjs/server";
 
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (opts: { headers: Headers; }) => {
   const authData = auth();
   return {
     db,
@@ -32,7 +32,8 @@ export const createCallerFactory = t.createCallerFactory;
 export const createTRPCRouter = t.router;
 
 export const authMiddleware = t.middleware(({ ctx, next }) => {
-  if (!ctx.auth.userId) {
+  const userId = ctx.auth.userId;
+  if (!userId) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "You must be logged in to access this resource",
@@ -40,12 +41,19 @@ export const authMiddleware = t.middleware(({ ctx, next }) => {
   }
 
   return next({
-    ctx,
+    ctx: {
+      ...ctx,
+      auth: {
+        ...ctx.auth,
+        userId,
+      },
+    },
   });
 });
 
 export const adminMiddleware = t.middleware(({ ctx, next }) => {
-  if (!ctx.auth.orgId) {
+  const orgId = ctx.auth.orgId;
+  if (!orgId) {
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "You must be an admin to access this resource",
@@ -53,7 +61,13 @@ export const adminMiddleware = t.middleware(({ ctx, next }) => {
   }
 
   return next({
-    ctx,
+    ctx: {
+      ...ctx,
+      auth: {
+        ...ctx.auth,
+        orgId,
+      }
+    },
   });
 });
 
