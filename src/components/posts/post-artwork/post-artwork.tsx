@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import type { HTMLAttributes, FC } from "react";
+import { Loader2 } from "lucide-react";
+import { type HTMLAttributes, type FC, Suspense } from "react";
+import { fetchUser } from "@/lib/fetch-user";
 import type { api } from "@/trpc/server";
 import { cn } from "@/lib/utils";
 import {
@@ -11,12 +13,11 @@ import {
   ContextMenuTrigger,
   ContextMenuSeparator,
   ContextMenuSubTrigger,
-  // ContextMenuSubContent,
+  ContextMenuSubContent,
 } from "@/components/ui/context-menu";
 import { Badge } from "@/components/ui/badge";
 import { DynamicIcon } from "@/components/ui/dynamic-icon";
-import { fetchUser } from "../../../lib/fetch-user";
-// import { PlusCircle } from "lucide-react";
+import { BookmarksList } from "./bookmarks-list";
 
 export type PostArtworkProps = HTMLAttributes<HTMLAnchorElement> & {
   post: Awaited<ReturnType<typeof api.posts.mine>>[0];
@@ -78,39 +79,17 @@ export const PostArtwork: FC<PostArtworkProps> = async ({
           </div>
         </ContextMenuTrigger>
         <ContextMenuContent className="w-40">
-          <ContextMenuItem>Add to Favorites</ContextMenuItem>
           <ContextMenuSub>
             <ContextMenuSubTrigger>Add to Bookmark</ContextMenuSubTrigger>
-            {/* <ContextMenuSubContent className="w-48">
-              <ContextMenuItem>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                New Playlist
-              </ContextMenuItem>
-              <ContextMenuSeparator />
-              {playlists.map((playlist) => (
-                <ContextMenuItem key={playlist}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="mr-2 h-4 w-4"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M21 15V6M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM12 12H3M16 6H3M12 18H3" />
-                  </svg>
-                  {playlist}
-                </ContextMenuItem>
-              ))}
-            </ContextMenuSubContent> */}
+            <ContextMenuSubContent className="w-48">
+              <Suspense fallback={<Loader2 className="h-4 w-4 animate-spin" />}>
+                <BookmarksList post={post} />
+              </Suspense>
+            </ContextMenuSubContent>
           </ContextMenuSub>
           <ContextMenuSeparator />
           <ContextMenuItem>Like</ContextMenuItem>
           <ContextMenuItem>Share</ContextMenuItem>
-          <ContextMenuSeparator />
-          <p className="text-sm text-blue-500">* TBI all in this menu</p>
         </ContextMenuContent>
       </ContextMenu>
       <div className="space-y-1 text-sm">
