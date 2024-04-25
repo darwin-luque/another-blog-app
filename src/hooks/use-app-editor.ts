@@ -38,19 +38,31 @@ export const useAppEditor = ({ quiet, content }: UseAppEditorProps = {}) => {
       }
     },
     async onClientUploadComplete(files) {
-      const response = await Promise.allSettled(files.map((file) => createFile.mutateAsync({
-        ...file,
-        createdBy: file.serverData.uploadedBy ?? "guest",
-      })));
+      const response = await Promise.allSettled(
+        files.map((file) => createFile.mutateAsync({
+          ...file,
+          createdBy: file.serverData.uploadedBy ?? "guest",
+        }))
+      );
       if (!quiet || (typeof quiet !== "boolean" && !quiet.success)) {
-        const successfulUploads = response.filter((result) => result.status === "fulfilled");
-        const failedUploads = response.filter((result) => result.status === "rejected");
+        const successfulUploads = response.filter((result): result is PromiseFulfilledResult<{
+          id: string;
+          name: string;
+          createdBy: string;
+          key: string;
+          type: string;
+          createdAt: Date;
+          updatedAt: Date;
+          url: string;
+          size: number;
+        }[]> => result.status === "fulfilled");
+        const failedUploads = response.filter((result): result is PromiseRejectedResult => result.status === "rejected");
 
         if (failedUploads.length) {
           toast({
             title: "Failed to upload image",
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            description: failedUploads.map((result) => result.reason).join(", "),
+            description: "Something went wrong",
             variant: "destructive",
           });
         }
