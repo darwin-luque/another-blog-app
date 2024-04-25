@@ -18,10 +18,13 @@ export const SidebarBookmarks: FC = () => {
 
   return (
     <Dialog>
-      <div className="px-3 py-2">
-        <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+      <div className="px-3 py-2 space-y-2">
+        <Link
+          href="/bookmarks"
+          className="px-4 text-lg font-semibold tracking-tight"
+        >
           Bookmarks
-        </h2>
+        </Link>
         <div className="space-y-2">
           <DialogTrigger asChild>
             <Button variant="outline" className="w-full justify-start">
