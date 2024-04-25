@@ -52,6 +52,7 @@
     "@trpc/react-query": "next",
     "@trpc/server": "next",
     "@uploadthing/react": "^6.4.4",
+    "@vercel/postgres": "^0.8.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^1.0.0",
