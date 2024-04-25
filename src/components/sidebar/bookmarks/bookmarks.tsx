@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { FC } from "react";
+import { usePathname } from "next/navigation";
 import { Bookmark, BookmarkPlus, Loader2 } from "lucide-react";
 import { CreateBookmarkModal } from "@/components/bookmarks/create-modal";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { api } from "@/trpc/react";
 import { cn } from "@/lib/utils";
 
 export const SidebarBookmarks: FC = () => {
+  const pathname = usePathname();
   const {
     data: bookmarks,
     isLoading,
@@ -18,7 +20,7 @@ export const SidebarBookmarks: FC = () => {
 
   return (
     <Dialog>
-      <div className="px-3 py-2 space-y-2">
+      <div className="space-y-2 px-3 py-2">
         <Link
           href="/bookmarks"
           className="px-4 text-lg font-semibold tracking-tight"
@@ -41,11 +43,13 @@ export const SidebarBookmarks: FC = () => {
             {bookmarks?.map((bookmark) => (
               <Link
                 key={bookmark.id}
-                href="/my-blogs"
+                href={`/bookmarks/${bookmark.id}`}
                 className={cn(
                   buttonVariants({
-                    // variant: pathname === "/my-blogs" ? "secondary" : "ghost",
-                    variant: "ghost",
+                    variant:
+                      pathname === `/bookmarks/${bookmark.id}`
+                        ? "secondary"
+                        : "ghost",
                   }),
                   "w-full justify-start",
                 )}
