@@ -27,9 +27,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Textarea } from "@/components/ui/textarea";
 
 const createCategoryFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  description: z.string().min(2, { message: "Description must be at least 2 characters" }),
   icon: z.string(),
 });
 
@@ -73,6 +75,26 @@ export const CategoryForm: FC<CategoryFormProps> = ({
                   <Input placeholder="Art" {...field} />
                 </FormControl>
                 <FormDescription>The name of the category</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Tell us a little bit about the category"
+                    className="resize-none"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  A brief description of the category
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
