@@ -1,29 +1,99 @@
-# Create T3 App
+# Another Blog App
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is an application to demonstrate my abilities with Next.js, tRPC, TailwindCSS, and Drizzle ORM (among other technologies). The project is a simple blog app. However, I did add multiple features such as categories, bookmarks, and a complete blog creation with text formatting etc. The project is still in development and I will be adding more features in the future.
 
-## What's next? How do I make an app with this?
+## Technologies Used
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- Next.js
+- tRPC
+- TailwindCSS
+- Drizzle ORM
+- PostgreSQL
+- TipTap
+- React Hook Form
+- React Query
+- shadcn/ui
+- Lucide Icons
+- Uploadthing
+- Clerk
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Features
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- User Authentication
+- Blog Creation
+- Bookmarking
+- Categories
+- Text Formatting
+- Image Uploading
+- Dark Mode
+- Responsive Design
 
-## Learn More
+### User Authentication
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+The app uses Clerk for user authentication. Clerk is a no-code authentication solution that provides a complete user management system. It allows users to sign up, log in, and reset their password. It also provides a dashboard for users to manage their account.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+### Blog Creation
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+Users can create a blog post with a title, content, and category. The content editor is powered by TipTap, a rich text editor for Vue.js. Users can format their text, add images, and more.
 
-## How do I deploy this?
+### Bookmarking
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Users can bookmark blog posts. Bookmarked posts are saved to the user's account and can be accessed from the sidebar.
+
+### Categories
+
+Admins can create categories for their blog posts. Categories are used to organize posts and make it easier for users to find content.
+
+### Text Formatting
+
+The content editor supports text formatting such as bold, italic, underline, and more. Users can also add links, images, and lists.
+
+### Image Uploading
+
+Users can upload images to include in their blog posts. Images are stored on the server and can be accessed from the content editor.
+
+### Dark Mode
+
+The app supports dark mode. Users can switch between light and dark mode using the toggle in the header.
+
+### Responsive Design
+
+The app is fully responsive and works on all devices. The layout adjusts to fit the screen size, and elements are rearranged to provide the best user experience.
+
+### Future Features
+
+- Search
+- Comments
+- Likes
+- For You Feed
+- Notifications
+- User Profiles
+- Admin Panel
+- SEO Optimization
+- Performance Improvements
+- Bug Fixes
+
+## Getting Started
+
+To get started with the project, follow these steps:
+
+1. Clone the repository and navigate to the project directory:
+
+```bash
+git clone https://github.com/darwin-luque/another-blog-app
+cd another-blog-app
+```
+
+2. Install the dependencies:
+
+```bash
+pnpm install
+```
+
+3. Create a `.env` file in the root of the project using the `.env.example` file as a template:
+
+4. Run the development server:
+
+```bash
+pnpm dev
+```
